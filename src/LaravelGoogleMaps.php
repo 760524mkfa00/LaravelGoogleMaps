@@ -188,11 +188,15 @@ class LaravelGoogleMaps
 
     public function initialize($config = array())
     {
+
+        $this->geocodeCaching = config('laravelgooglemaps.geocode.cache', false);
+
         foreach ($config as $key => $val) {
             if (isset($this->$key)) {
                 $this->$key = $val;
             }
         }
+
     }
 
     public function add_marker($params = array())
