@@ -16,7 +16,9 @@ UNALTERED, this code is licensed under the GNU General Public License version 3:
 http://www.gnu.org/licenses/gpl.html
 */
 
-class isInsidePolygon {
+class isInsidePolygon
+{
+
     var $pointOnVertex = true; // Check if the point sits exactly on one of the vertices?
 
     //Constructor
