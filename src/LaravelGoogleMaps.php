@@ -2,6 +2,9 @@
 
 namespace 760524mkfa00\LaravelGoogleMaps;
 
+use 760524mkfa00\LaravelGoogleMaps\Containers\isInsidePolygon;
+use Illuminate\Support\Facades\DB;
+
 class LaravelGoogleMaps
 {
     protected $output_js;
@@ -14,6 +17,8 @@ class LaravelGoogleMaps
     public $adsenseFormat = 'HALF_BANNER';            // The format of the AdUnit
     public $adsensePosition = 'TOP_CENTER';                // The position of the AdUnit
     protected $adsensePublisherID = '';                        // Your Google AdSense publisher ID
+
+    public $externalJs = '';                        // JS injection
 
     public $backgroundColor = '';                        // A hex color value shown as the map background when tiles have not yet loaded as the user pans
     public $bicyclingOverlay = false;                    // If set to TRUE will overlay bicycling information (ie. bike paths and suggested routes) onto the map by default
@@ -83,6 +88,7 @@ class LaravelGoogleMaps
     public $region = '';                        // Country code top-level domain (eg "uk") within which to search. Useful if supplying addresses rather than lat/longs
     public $scaleControlPosition = '';                        // The position of the Scale control, eg. 'BOTTOM_RIGHT'
     public $scrollwheel = true;                        // If set to FALSE will disable zooming by scrolling of the mouse wheel
+    public $gestureHandling = 'greedy';                        // gestureHandling: 'greedy'
     protected $sensor = false;                    // Set to TRUE if being used on a device that can detect a users location
     public $streetViewAddressControl = true;                        // If set to FALSE will hide the Address control
     public $streetViewAddressPosition = '';                        // The position of the Address control, eg. 'BOTTOM'
@@ -358,7 +364,6 @@ class LaravelGoogleMaps
 
             $marker_output .= '
             marker_'.$marker_id.'.set("content", "'.$marker['infowindow_content'].'");
-
             google.maps.event.addListener(marker_'.$marker_id.', "click", function(event) {
                 iw_'.$this->map_name.'.setContent(this.get("content"));
                 iw_'.$this->map_name.'.open('.$this->map_name.', this);
@@ -530,9 +535,7 @@ class LaravelGoogleMaps
             }
             $polyline_output .= '
                 });
-
                 polyline_'.count($this->polylines).'.setMap('.$this->map_name.');
-
             ';
 
             if ($polyline['onclick'] != "") {
@@ -679,9 +682,7 @@ class LaravelGoogleMaps
         }
         $polygon_output .= '
             });
-
             polygon_'.count($this->polygons).'.setMap('.$this->map_name.');
-
         ';
 
         if ($polygon['onclick'] != "") {
@@ -1140,13 +1141,11 @@ class LaravelGoogleMaps
 
             if (!$this->loadAsynchronously) {
                 $this->output_js .= '
-
                 <script type="text/javascript" src="'.$apiLocation.'"></script>';
             }
 
             if ($this->cluster) {
                 $this->output_js .= '
-
             <script type="text/javascript" src="'.asset('libs/LaravelGoogleMaps/markerclusterer.js').'"></script >
                     ';
             }
@@ -1165,6 +1164,7 @@ class LaravelGoogleMaps
             var iw_'.$this->map_name.';
             var geocoder; // Global declaration of geocoder for reverser location from latLng
             ';
+
         if ($this->cluster) {
             $this->output_js_contents .= 'var markerCluster;
             ';
@@ -1206,11 +1206,9 @@ class LaravelGoogleMaps
             }';
         }
         $this->output_js_contents .= ');
-
                  ';*/
 
         $this->output_js_contents .= 'function initialize_'.$this->map_name.'() {
-
                 ';
 
         $styleOutput = '';
@@ -1250,7 +1248,6 @@ class LaravelGoogleMaps
             }';
         }
         $this->output_js_contents .= ');
-
                  ';
 
         $this->output_js_contents .= '
@@ -1381,6 +1378,10 @@ class LaravelGoogleMaps
             $this->output_js_contents .= ',
                     scrollwheel: false';
         }
+        if ($this->gestureHandling == 'greedy') {
+            $this->output_js_contents .= ',
+                    gestureHandling: \'greedy\'';
+        }
         if ($this->streetViewControlPosition != "") {
             $this->output_js_contents .= ',
                     streetViewControlOptions: {position: google.maps.ControlPosition.'.strtoupper($this->streetViewControlPosition).'}';
@@ -1405,6 +1406,8 @@ class LaravelGoogleMaps
         $this->output_js_contents .= '};';
 
         $this->output_js_contents .=$this->map_name.' = new google.maps.Map(document.getElementById("'.$this->map_div_id.'"), myOptions);';
+
+
 
         /* Map Custom Controls */
         foreach($this->injectControlsInTopLeft as $customControl){
@@ -1781,7 +1784,6 @@ class LaravelGoogleMaps
                         ';
                 }
                 $this->output_js_contents .= '};
-
                 placesService = new google.maps.places.PlacesService('.$this->map_name.');
                 placesService.search(placesRequest, placesCallback);
                 ';
@@ -1823,7 +1825,6 @@ class LaravelGoogleMaps
 
                 $this->output_js_contents .= '
                 var autocompleteInput = document.getElementById(\''.$this->placesAutocompleteInputID.'\');
-
                 placesAutocomplete = new google.maps.places.Autocomplete(autocompleteInput, autocompleteOptions);
                 ';
 
@@ -1839,16 +1840,13 @@ class LaravelGoogleMaps
                           '. $this->palcesAutoCompleteOnChangeFailed .'
                           return;
                         }
-
                         if (place.geometry.viewport) {
                           '. $this->map_name .'.fitBounds(place.geometry.viewport);
                         } else {
                           '. $this->map_name .'.setCenter(place.geometry.location);
                           '. $this->map_name .'.setZoom('. $this->zoom .');
                         }
-
                         event = {latLng: place.geometry.location}
-
                         '. $this->placesAutocompleteOnChange .'
                     });
                     ';
@@ -1858,7 +1856,6 @@ class LaravelGoogleMaps
 
         if ($this->onboundschanged != "") {
             $this->output_js_contents .= 'google.maps.event.addListener('.$this->map_name.', "bounds_changed", function(event) {
-
                 '.$this->onboundschanged.'
             });
             ';
@@ -2046,7 +2043,6 @@ class LaravelGoogleMaps
         if ($this->adsense) {
             $this->output_js_contents .= '
             var adUnitDiv = document.createElement("div");
-
             // Note: replace the publisher ID noted here with your own
             // publisher ID.
             var adUnitOptions = {
@@ -2123,7 +2119,6 @@ class LaravelGoogleMaps
 
         $this->output_js_contents .= '
             }
-
         ';
 
         /* onStaged map */
@@ -2135,6 +2130,14 @@ class LaravelGoogleMaps
 
         $this->output_js_contents .= '}
         ';
+
+
+        // additional JS
+        if ($this->externalJs) {
+            $this->output_js_contents .= '
+            ' . $this->externalJs . '
+            ';
+        }
 
         // add markers
         $this->output_js_contents .= '
@@ -2149,7 +2152,6 @@ class LaravelGoogleMaps
 
         if ($this->directions) {
             $this->output_js_contents .= 'function calcRoute(start, end) {
-
             var request = {
                     origin:start,
                     destination:end,
@@ -2212,9 +2214,7 @@ class LaravelGoogleMaps
             $this->output_js_contents .= 'function placesCallback(results, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < results.length; i++) {
-
                         var place = results[i];
-
                         var placeLoc = place.geometry.location;
                         var placePosition = new google.maps.LatLng(placeLoc.lat(), placeLoc.lng());
                         var markerOptions = {
@@ -2227,9 +2227,7 @@ class LaravelGoogleMaps
                             iw_'.$this->map_name.'.setContent(this.get("content"));
                             iw_'.$this->map_name.'.open('.$this->map_name.', this);
                         });
-
                         lat_longs_'.$this->map_name.'.push(placePosition);
-
                     }
                     ';
             if ($this->zoom == "auto") {
@@ -2360,7 +2358,8 @@ class LaravelGoogleMaps
 
         if ($this->geocodeCaching) { // if caching of geocode requests is activated
 
-            $geocache = DB::table($this->geoCacheTableName)->select("latitude","longitude")->where("address", trim(strtolower($address)))->first();
+
+            $geocache = DB::table($this->geoCacheTableName)->select("latitude","longitude")->where("address", trim(mb_strtolower($address)))->first();
 
             if ($geocache) {
 
@@ -2368,7 +2367,7 @@ class LaravelGoogleMaps
             }
         }
 
-        $data_location = "https://maps.google.com/maps/api/geocode/json?address=".urlencode(utf8_encode($address))."&sensor=".$this->sensor."&key=".$this->apiKey;
+        $data_location = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=".$this->sensor."&key=".$this->apiKey;
         if ($this->region != "" && strlen($this->region) == 2) {
             $data_location .= "&region=".$this->region;
         }
@@ -2395,7 +2394,7 @@ class LaravelGoogleMaps
             if ($this->geocodeCaching) { // if we to need to cache this result
                 if ($address != "" && $lat != 0 && $lng != 0) {
                     $data = array(
-                        "address" => trim(strtolower($address)),
+                        "address" => trim(mb_strtolower($address)),
                         "latitude" => $lat,
                         "longitude" => $lng,
                     );
