@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGMapsGeoCacheTable extends Migration
 {
@@ -14,7 +14,7 @@ class CreateGMapsGeoCacheTable extends Migration
     public function up()
     {
         Schema::create('gmaps_geocache', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->text('address');
             $table->string('latitude');
             $table->string('longitude');
@@ -29,6 +29,6 @@ class CreateGMapsGeoCacheTable extends Migration
      */
     public function down()
     {
-        Schema::drop('gmaps_geocache');
+        Schema::dropIfExists('gmaps_geocache');
     }
 }
