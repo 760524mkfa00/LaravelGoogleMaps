@@ -190,6 +190,7 @@ class LaravelGoogleMaps
     {
 
         $this->geocodeCaching = config('laravelgooglemaps.geocode.cache', false);
+        $this->geoCacheTableName = config('laravelgooglemaps.geocode.table_name', 'gmaps_geocache');
 
         foreach ($config as $key => $val) {
             if (isset($this->$key)) {
