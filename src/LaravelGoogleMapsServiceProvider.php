@@ -11,18 +11,13 @@ class LaravelGoogleMapsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravelgooglemaps');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravelgooglemaps');
+
          $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravelgooglemaps.php'),
-            ], 'config');
+//            $this->publishes([
+//                __DIR__.'/../config/config.php' => config_path('laravelgooglemaps.php'),
+//            ], 'config');
 
             $this->publishes([
                 __DIR__.'/../public/libs/' => public_path('libs')
