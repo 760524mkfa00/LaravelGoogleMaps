@@ -16,7 +16,7 @@ class LaravelGoogleMapsServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravelgooglemaps');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravelgooglemaps');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
@@ -24,34 +24,9 @@ class LaravelGoogleMapsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('laravelgooglemaps.php'),
             ], 'config');
 
-
-             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-//            $this->publishes([
-//                __DIR__.'/../database/migrations/create_gmaps_geocache_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_gmaps_geocache_table.php')
-//            ], 'migrations');
-
             $this->publishes([
                 __DIR__.'/../public/libs/' => public_path('libs')
             ], 'public');
-
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravelgooglemaps'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/laravelgooglemaps'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravelgooglemaps'),
-            ], 'lang');*/
-
-            // Registering package commands.
-            // $this->commands([]);
         }
     }
 
