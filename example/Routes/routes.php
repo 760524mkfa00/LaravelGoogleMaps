@@ -12,8 +12,8 @@
 */
 Route::get('/map', 'MapController@index');
 
-Route::get('/', function(){
-    $config = array();
+Route::get('/', function () {
+    $config = [];
     $config['center'] = 'Defence Garden, Karachi';
     GMaps::initialize($config);
     $map = GMaps::create_map();

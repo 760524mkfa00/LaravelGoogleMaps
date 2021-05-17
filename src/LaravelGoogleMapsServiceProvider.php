@@ -11,8 +11,7 @@ class LaravelGoogleMapsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
-         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -20,7 +19,7 @@ class LaravelGoogleMapsServiceProvider extends ServiceProvider
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../public/libs/' => public_path('libs')
+                __DIR__.'/../public/libs/' => public_path('libs'),
             ], 'public');
         }
     }
