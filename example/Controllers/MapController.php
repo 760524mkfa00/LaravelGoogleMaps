@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use FarhanWazir\GoogleMaps\GMaps;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class MapController extends Controller
 {
-
     protected $gmap;
 
-    public function __construct(GMaps $gmap){
+    public function __construct(GMaps $gmap)
+    {
         $this->gmap = $gmap;
     }
 
-    public function index(){
+    public function index()
+    {
 
         /******** Custom Map Controls ********/
 
@@ -50,8 +48,8 @@ class MapController extends Controller
 
         /******** End Controls ********/
 
-        $config = array();
-        $config['map_height'] = "100%";
+        $config = [];
+        $config['map_height'] = '100%';
         $config['center'] = 'Clifton, Karachi';
         $config['onboundschanged'] = 'if (!centreGot) {
             var mapCentre = map.getCenter();
@@ -64,14 +62,14 @@ class MapController extends Controller
         $this->gmap->initialize($config); // Initialize Map with custom configuration
 
         // set up the marker ready for positioning
-        $marker = array();
+        $marker = [];
         $marker['draggable'] = true;
         $marker['ondragend'] = '
-        iw_'. $this->gmap->map_name .'.close();
+        iw_'.$this->gmap->map_name.'.close();
         reverseGeocode(event.latLng, function(status, result, mark){
             if(status == 200){
-                iw_'. $this->gmap->map_name .'.setContent(result);
-                iw_'. $this->gmap->map_name .'.open('. $this->gmap->map_name .', mark);
+                iw_'.$this->gmap->map_name.'.setContent(result);
+                iw_'.$this->gmap->map_name.'.open('.$this->gmap->map_name.', mark);
             }
         }, this);
         ';
