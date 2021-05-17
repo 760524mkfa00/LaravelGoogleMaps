@@ -170,9 +170,9 @@ class LaravelGoogleMaps
 
     public function __construct($config = array())
     {
-        $this->apiKey = config('googlemaps.key');
-        $this->adsensePublisherID = config('googlemaps.adsense_publisher_id');
-        $this->class = config('googlemaps.css_class');
+        $this->apiKey = config('laravelgooglemaps.key');
+        $this->adsensePublisherID = config('laravelgooglemaps.adsense_publisher_id');
+        $this->class = config('laravelgooglemaps.css_class');
 
         if (count($config) > 0) {
             $this->initialize($config);
@@ -1147,7 +1147,7 @@ class LaravelGoogleMaps
             if ($this->cluster) {
                 $this->output_js .= '
 
-            <script type="text/javascript" src="'.asset('libs/GMaps/markerclusterer.js').'"></script >
+            <script type="text/javascript" src="'.asset('libs/LaravelGoogleMaps/markerclusterer.js').'"></script >
                     ';
             }
         }
@@ -2374,7 +2374,7 @@ class LaravelGoogleMaps
         }
 
         $context = null;
-        $proxy = config('googlemaps.http_proxy');
+        $proxy = config('laravelgooglemaps.http_proxy');
         if (!empty($proxy)) {
             $context = stream_context_create([
                 'http' => [
