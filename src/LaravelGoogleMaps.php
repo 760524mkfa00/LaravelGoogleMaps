@@ -1,8 +1,8 @@
 <?php
 
-namespace 760524mkfa00\LaravelGoogleMaps;
+namespace fahy\LaravelGoogleMaps;
 
-use 760524mkfa00\LaravelGoogleMaps\Containers\isInsidePolygon;
+use fahy\LaravelGoogleMaps\Containers\isInsidePolygon;
 use Illuminate\Support\Facades\DB;
 
 class LaravelGoogleMaps

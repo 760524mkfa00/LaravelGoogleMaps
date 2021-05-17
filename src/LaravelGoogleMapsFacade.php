@@ -1,6 +1,6 @@
 <?php
 
-namespace 760524mkfa00\LaravelGoogleMaps;
+namespace fahy\LaravelGoogleMaps;
 
 use Illuminate\Support\Facades\Facade;
 
