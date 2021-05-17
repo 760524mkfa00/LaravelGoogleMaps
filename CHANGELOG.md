@@ -1,20 +1,7 @@
-# Change Log
+# Changelog
 
-## 1.2.5 - 1.5.0: 03 May 2016
-### Added
-- Examples create
-- Configuration
+All notable changes to `laravelgooglemaps` will be documented in this file
 
-### Changed
-- Class modifications
-- Installation instructions and usage ReadMe.
+## 1.0.0 - 201X-XX-XX
 
-## 1.8.x - 2.1.1: 31 July 2016
-### Added
-- Geofence
-- Database
-
-### Changed
-- Added Geofence for server side check
-- Geo cache fixed
-- Added usage of geo-fence
+- initial release

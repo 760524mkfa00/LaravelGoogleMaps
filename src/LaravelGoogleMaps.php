@@ -2,12 +2,8 @@
 
 namespace 760524mkfa00\LaravelGoogleMaps;
 
-use 760524mkfa00\LaravelGoogleMaps\Containers\isInsidePolygon;
-use Illuminate\Support\Facades\DB;
-
-class GMaps
+class LaravelGoogleMaps
 {
-
     protected $output_js;
     protected $output_js_contents;
     protected $output_html;
@@ -1301,7 +1297,7 @@ class GMaps
                     streetViewControl: false';
         }
         //Added for full screen control
-         if ($this->enableFullScreenControl) {
+        if ($this->enableFullScreenControl) {
             $this->output_js_contents .= ',
                     fullscreenControl: true';
         }
