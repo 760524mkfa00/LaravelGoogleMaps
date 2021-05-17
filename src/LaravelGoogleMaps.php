@@ -193,7 +193,6 @@ class LaravelGoogleMaps
                 $this->$key = $val;
             }
         }
-
     }
 
     public function add_marker($params = array())
