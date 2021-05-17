@@ -1,10 +1,10 @@
-# Very short description of the package
+# Google Maps for Laravel with Caching
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/760524mkfa00/laravelgooglemaps.svg?style=flat-square)](https://packagist.org/packages/760524mkfa00/laravelgooglemaps)
 [![Total Downloads](https://img.shields.io/packagist/dt/760524mkfa00/laravelgooglemaps.svg?style=flat-square)](https://packagist.org/packages/760524mkfa00/laravelgooglemaps)
 ![GitHub Actions](https://github.com/760524mkfa00/laravelgooglemaps/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Provides a nice wrapper for accessing the Google Maps API, including database caching of Lat and Long positions to reduce requests. You will require an API key from [Google Maps Platform](https://developers.google.com/maps)
 
 ## Installation
 
@@ -12,7 +12,13 @@ You can install the package via composer:
 
 ```bash
 composer require 760524mkfa00/laravelgooglemaps
+php artisan config:publish 760524mkfa00/laravelgooglemaps
+php artisan migrate
 ```
+
+Add 'GOOGLE_MAPS_API_KEY=xxxxxxxxxxxxxxxxxxxxxxx' to your .env file.
+
+You can also add your AD Sense API Key to your .env file: 'GOOGLE_ADSENSE_PUBLISHER_ID=xxxxxxxxxxxxxxxxxxxx' (optional)
 
 ## Usage
 
