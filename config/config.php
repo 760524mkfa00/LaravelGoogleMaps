@@ -17,7 +17,9 @@ return [
 
     'geocode' => [
         'cache' => false, //Geocode caching into database
+        'cacheDistance' => false,
         'table_name' => 'gmaps_geocache', //Geocode caching database table name
+        'distance_table' => 'gmaps_distancecache',
     ],
 
     'css_class' => '', //Your custom css class
