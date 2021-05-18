@@ -2432,7 +2432,7 @@ class LaravelGoogleMaps
         return $output;
     }
 
-    public function calculateDistances($params = []) :array
+    public function calculateDistances($params = [])
     {
 
         $distance = '';
@@ -2456,8 +2456,7 @@ class LaravelGoogleMaps
             $distanceCache = DB::table($this->distanceCacheTableName)->select('distance', 'duration')->where('location_query', trim(mb_strtolower($location_query)))->first();
 
             if ($distanceCache) {
-                dd($distanceCache);
-                return [$distanceCache->distance, $distanceCache->duration];
+                return $distanceCache;
             }
         }
 
