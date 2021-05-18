@@ -2453,10 +2453,9 @@ class LaravelGoogleMaps
 
         if ($this->distanceCache) { // if caching of geocode requests is activated
 
-            $distanceCache = DB::table($this->distanceCacheTableName)->select('distance')->where('location_query', trim(mb_strtolower($location_query)))->first();
+            $distanceCache = DB::table($this->distanceCacheTableName)->select('distance', 'duration')->where('location_query', trim(mb_strtolower($location_query)))->first();
 
             if ($distanceCache) {
-                dd($distanceCache);
                 return [$distanceCache->distance, $distanceCache->duration];
             }
         }
