@@ -1,5 +1,5 @@
 {
-  "name": "Fahy/laravelgooglemaps",
+  "name": "fahy/laravelgooglemaps",
   "description": "Package based on Google Maps",
   "keywords": [
     "760524mkfa00",
@@ -30,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Fahy\\LaravelGoogleMaps\\": "src"
+      "fahy\\LaravelGoogleMaps\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Fahy\\LaravelGoogleMaps\\Tests\\": "tests"
+      "fahy\\LaravelGoogleMaps\\Tests\\": "tests"
     }
   },
   "scripts": {
@@ -49,10 +49,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Fahy\\LaravelGoogleMaps\\LaravelGoogleMapsServiceProvider"
+        "fahy\\LaravelGoogleMaps\\LaravelGoogleMapsServiceProvider"
       ],
       "aliases": {
-        "LaravelGoogleMaps": "Fahy\\LaravelGoogleMaps\\LaravelGoogleMapsFacade"
+        "LaravelGoogleMaps": "fahy\\LaravelGoogleMaps\\LaravelGoogleMapsFacade"
       }
     }
   }
