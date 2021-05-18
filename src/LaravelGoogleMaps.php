@@ -2432,9 +2432,8 @@ class LaravelGoogleMaps
         return $output;
     }
 
-    public function calculateDistances($params = []) :array
+    public function calculateDistances($params = []): array
     {
-
         $distance = '';
         $duration = '';
         $location = [];
@@ -2457,10 +2456,10 @@ class LaravelGoogleMaps
 
             if ($distanceCache) {
                 dd($distanceCache);
+
                 return [$distanceCache->distance, $distanceCache->duration];
             }
         }
-
 
         $data_location = 'https://maps.googleapis.com/maps/api/distancematrix/json?'.$location_query.'&key='.$this->apiKey;
         if ($this->region != '' && strlen($this->region) == 2) {
@@ -2482,7 +2481,6 @@ class LaravelGoogleMaps
 
         $data = json_decode($data);
 
-
         if ($data->status == 'OK') {
             $distance = $data->rows[0]->elements[0]->distance->value;
             $duration = $data->rows[0]->elements[0]->duration->value;
@@ -2491,21 +2489,19 @@ class LaravelGoogleMaps
                     $data = [
                         'location_query' => trim(mb_strtolower($location_query)),
                         'distance' => $distance,
-                        'duration' => $duration
+                        'duration' => $duration,
                     ];
                     DB::table($this->distanceCacheTableName)->insert($data);
                 }
             }
         } else {
 //            if ($data->status == 'OVER_QUERY_LIMIT') {
-                $error = $data->status;
+            $error = $data->status;
 //            }
         }
 
         return [$distance, $duration, $error];
-
     }
-
 
     public function getMapName()
     {
