@@ -3,6 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/760524mkfa00/laravelgooglemaps.svg?style=flat-square)](https://packagist.org/packages/760524mkfa00/laravelgooglemaps)
 [![Total Downloads](https://img.shields.io/packagist/dt/760524mkfa00/laravelgooglemaps.svg?style=flat-square)](https://packagist.org/packages/760524mkfa00/laravelgooglemaps)
 ![GitHub Actions](https://github.com/760524mkfa00/laravelgooglemaps/actions/workflows/main.yml/badge.svg)
+[![StyleCI](https://github.styleci.io/repos/367474224/shield?branch=master)](https://github.styleci.io/repos/367474224?branch=master)
 
 Provides a nice wrapper for accessing the Google Maps API, including database caching of Lat and Long positions to reduce requests. You will require an API key from [Google Maps Platform](https://developers.google.com/maps)
 
