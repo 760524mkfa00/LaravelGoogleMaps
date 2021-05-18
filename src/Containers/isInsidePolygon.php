@@ -1,6 +1,6 @@
 <?php
 
-namespace Fahy\LaravelGoogleMaps\Containers;
+namespace fahy\LaravelGoogleMaps\Containers;
 
 /*
 Description: The point-in-polygon algorithm allows you to check if a point is
