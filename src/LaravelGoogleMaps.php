@@ -189,7 +189,7 @@ class LaravelGoogleMaps
         $this->geoCacheTableName = config('laravelgooglemaps.geocode.table_name', 'gmaps_geocache');
 
         $this->distanceCache = config('laravelgooglemaps.geocode.cacheDistance', false);
-        $this->distanceCacheTableName = config('laravelgooglemaps.geocode.gmaps_distancecache', 'gmaps_distancecache');
+        $this->distanceCacheTableName = config('laravelgooglemaps.geocode.distance_table', 'gmaps_distancecache');
 
         if (count($config) > 0) {
             $this->initialize($config);
@@ -2432,14 +2432,16 @@ class LaravelGoogleMaps
         return $output;
     }
 
-    public function calculateDistances($params = [])
+    public function calculateDistances($params = []) :array
     {
 
+        $distance = '';
+        $duration = '';
         $location = [];
+        $error = '';
 
         $location['origins'] = '';
         $location['destinations'] = '';
-        $location['key'] = $this->apiKey;
 
         foreach ($params as $key => $value) {
             if (isset($location[$key])) {
@@ -2449,18 +2451,17 @@ class LaravelGoogleMaps
 
         $location_query = http_build_query($location);
 
-//        if ($this->distanceCache) { // if caching of geocode requests is activated
-//
-//            $distanceCache = DB::table($this->distanceCacheTableName)->select('distance')->where('http_string', $location)->first();
-//
-//            if ($distanceCache) {
-//                return [$distanceCache->distance];
-//            }
-//        }
+        if ($this->distanceCache) { // if caching of geocode requests is activated
 
-        $apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json';
+            $distanceCache = DB::table($this->distanceCacheTableName)->select('distance')->where('location_query', trim(mb_strtolower($location_query)))->first();
 
-        $data_location = 'https://maps.googleapis.com/maps/api/distancematrix/json?'.$location_query;
+            if ($distanceCache) {
+                return [$distanceCache->distance, $distanceCache->duration];
+            }
+        }
+
+
+        $data_location = 'https://maps.googleapis.com/maps/api/distancematrix/json?'.$location_query.'&key='.$this->apiKey;
         if ($this->region != '' && strlen($this->region) == 2) {
             $data_location .= '&region='.$this->region;
         }
@@ -2480,41 +2481,30 @@ class LaravelGoogleMaps
 
         $data = json_decode($data);
 
-        dd($data);
 
-//        if ($data->status == 'OK') {
-//            $lat = $data->results[0]->geometry->location->lat;
-//            $lng = $data->results[0]->geometry->location->lng;
-//
-//            if ($this->geocodeCaching) { // if we to need to cache this result
-//                if ($address != '' && $lat != 0 && $lng != 0) {
-//                    $data = [
-//                        'address' => trim(mb_strtolower($address)),
-//                        'latitude' => $lat,
-//                        'longitude' => $lng,
-//                    ];
-//                    DB::table($this->geoCacheTableName)->insert($data);
-//                }
-//            }
-//        } else {
+        if ($data->status == 'OK') {
+            $distance = $data->rows[0]->elements[0]->distance->value;
+            $duration = $data->rows[0]->elements[0]->duration->value;
+            if ($this->distanceCache) { // if we to need to cache this result
+                if ($data_location != '' && $distance != '' && $duration != '') {
+                    $data = [
+                        'location_query' => trim(mb_strtolower($location_query)),
+                        'distance' => $distance,
+                        'duration' => $duration
+                    ];
+                    DB::table($this->distanceCacheTableName)->insert($data);
+                }
+            }
+        } else {
 //            if ($data->status == 'OVER_QUERY_LIMIT') {
-//                $error = $data->status;
-//                if ($attempts < 2) {
-//                    sleep(1);
-//                    $attempts++;
-//                    [$lat, $lng, $error] = $this->get_lat_long_from_address($address, $attempts);
-//                }
+                $error = $data->status;
 //            }
-//        }
-//
-//        return [$lat, $lng, $error];
+        }
+
+        return [$distance, $duration, $error];
 
     }
 
-    public function add_location()
-    {
-
-    }
 
     public function getMapName()
     {

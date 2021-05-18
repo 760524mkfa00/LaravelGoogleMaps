@@ -15,10 +15,9 @@ class CreateGMapsDistanceCacheTable extends Migration
     {
         Schema::create('gmaps_distancecache', function (Blueprint $table) {
             $table->id();
-//            $table->text('address');
-//            $table->string('latitude');
-//            $table->string('longitude');
-//            $table->timestamps();
+            $table->text('location_query');
+            $table->string('distance');
+            $table->string('duration');
         });
     }
 
