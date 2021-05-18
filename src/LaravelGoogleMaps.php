@@ -173,8 +173,8 @@ class LaravelGoogleMaps
      * Distance properties should extend a service class
      */
 
-//    public $distanceCache;
-//    public $distanceCacheTableName;
+    public $distanceCache;
+    public $distanceCacheTableName;
 
     //user callbacks
     public $init_call_func = '';
@@ -188,8 +188,8 @@ class LaravelGoogleMaps
         $this->geocodeCaching = config('laravelgooglemaps.geocode.cache', false);
         $this->geoCacheTableName = config('laravelgooglemaps.geocode.table_name', 'gmaps_geocache');
 
-//        $this->distanceCache = config('laravelgooglemaps.geocode.cacheDistance', false);
-//        $this->distanceCacheTableName = config('laravelgooglemaps.geocode.gmaps_distancecache', 'gmaps_distancecache');
+        $this->distanceCache = config('laravelgooglemaps.geocode.cacheDistance', false);
+        $this->distanceCacheTableName = config('laravelgooglemaps.geocode.gmaps_distancecache', 'gmaps_distancecache');
 
         if (count($config) > 0) {
             $this->initialize($config);
@@ -2430,6 +2430,90 @@ class LaravelGoogleMaps
         }
 
         return $output;
+    }
+
+    public function calculateDistances($params = [])
+    {
+
+        $location = [];
+
+        $location['origins'] = '';
+        $location['destinations'] = '';
+        $location['key'] = $this->apiKey;
+
+        foreach ($params as $key => $value) {
+            if (isset($location[$key])) {
+                $location[$key] = $value;
+            }
+        }
+
+        $location_query = http_build_query($location);
+
+//        if ($this->distanceCache) { // if caching of geocode requests is activated
+//
+//            $distanceCache = DB::table($this->distanceCacheTableName)->select('distance')->where('http_string', $location)->first();
+//
+//            if ($distanceCache) {
+//                return [$distanceCache->distance];
+//            }
+//        }
+
+        $apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json';
+
+        $data_location = 'https://maps.googleapis.com/maps/api/distancematrix/json?'.$location_query;
+        if ($this->region != '' && strlen($this->region) == 2) {
+            $data_location .= '&region='.$this->region;
+        }
+
+        $context = null;
+        $proxy = config('laravelgooglemaps.http_proxy');
+        if (! empty($proxy)) {
+            $context = stream_context_create([
+                'http' => [
+                    'proxy' => $proxy,
+                    'request_fulluri' => true,
+                ],
+            ]);
+        }
+
+        $data = file_get_contents($data_location, false, $context);
+
+        $data = json_decode($data);
+
+        dd($data);
+
+//        if ($data->status == 'OK') {
+//            $lat = $data->results[0]->geometry->location->lat;
+//            $lng = $data->results[0]->geometry->location->lng;
+//
+//            if ($this->geocodeCaching) { // if we to need to cache this result
+//                if ($address != '' && $lat != 0 && $lng != 0) {
+//                    $data = [
+//                        'address' => trim(mb_strtolower($address)),
+//                        'latitude' => $lat,
+//                        'longitude' => $lng,
+//                    ];
+//                    DB::table($this->geoCacheTableName)->insert($data);
+//                }
+//            }
+//        } else {
+//            if ($data->status == 'OVER_QUERY_LIMIT') {
+//                $error = $data->status;
+//                if ($attempts < 2) {
+//                    sleep(1);
+//                    $attempts++;
+//                    [$lat, $lng, $error] = $this->get_lat_long_from_address($address, $attempts);
+//                }
+//            }
+//        }
+//
+//        return [$lat, $lng, $error];
+
+    }
+
+    public function add_location()
+    {
+
     }
 
     public function getMapName()
