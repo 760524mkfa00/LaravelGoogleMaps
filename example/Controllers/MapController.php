@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use FarhanWazir\GoogleMaps\GMaps;
+use fahy\laravelgooglemaps\laravelgooglemaps;
 
 class MapController extends Controller
 {
