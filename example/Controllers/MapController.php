@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use fahy\laravelgooglemaps\laravelgooglemaps;
-
 class MapController extends Controller
 {
     protected $gmap;
