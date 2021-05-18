@@ -2434,7 +2434,6 @@ class LaravelGoogleMaps
 
     public function calculateDistances($params = [])
     {
-
         $location = [];
 
         $location['origins'] = '';
@@ -2508,12 +2507,10 @@ class LaravelGoogleMaps
 //        }
 //
 //        return [$lat, $lng, $error];
-
     }
 
     public function add_location()
     {
-
     }
 
     public function getMapName()
