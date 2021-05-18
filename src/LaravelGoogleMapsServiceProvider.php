@@ -1,6 +1,6 @@
 <?php
 
-namespace fahy\LaravelGoogleMaps;
+namespace Fahy\LaravelGoogleMaps;
 
 use Illuminate\Support\ServiceProvider;
 
