@@ -242,6 +242,7 @@ class LaravelGoogleMaps
         $marker['visible'] = true;                                // Defines if the marker is visible by default
         $marker['zIndex'] = '';                                    // The zIndex of the marker. If two markers overlap, the marker with the higher zIndex will appear on top
         $marker['label'] = '';                                    // The label of the marker.
+        $marker['type'] = '';                                   // Will support 'svg' or 'url'
 
         $marker_output = '';
 
@@ -272,28 +273,49 @@ class LaravelGoogleMaps
             }
         }
 
+//        TODO: Allow customizations of svg markers
+
         if ($marker['icon'] != '') {
-            $marker_output .= '
+
+            if($marker['type'] == 'svg') {
+                $marker_output .= "
+
+                var marker_icon = {
+                    path: '{$marker['icon']}',
+                    fillColor: 'blue',
+                    fillOpacity: 0.6,
+                    strokeWeight: 0,
+                    rotation: 0,
+                    scale: .1,
+                    anchor: new google.maps.Point(15, 30),
+                 };
+
+                ";
+            } else {
+
+                $marker_output .= '
                 var marker_icon = {
                     url: "'.$marker['icon'].'"';
-            if ($marker['icon_size'] != '') {
-                $marker_output .= ',
+                if ($marker['icon_size'] != '') {
+                    $marker_output .= ',
                     size: new google.maps.Size('.$marker['icon_size'].')';
-            }
-            if ($marker['icon_scaledSize'] != '') {
-                $marker_output .= ',
+                }
+                if ($marker['icon_scaledSize'] != '') {
+                    $marker_output .= ',
                     scaledSize: new google.maps.Size('.$marker['icon_scaledSize'].')';
-            }
-            if ($marker['icon_origin'] != '') {
-                $marker_output .= ',
+                }
+                if ($marker['icon_origin'] != '') {
+                    $marker_output .= ',
                     origin: new google.maps.Point('.$marker['icon_origin'].')';
-            }
-            if ($marker['icon_anchor'] != '') {
-                $marker_output .= ',
+                }
+                if ($marker['icon_anchor'] != '') {
+                    $marker_output .= ',
                     anchor: new google.maps.Point('.$marker['icon_anchor'].')';
-            }
-            $marker_output .= '};
+                }
+                $marker_output .= '};
             ';
+            }
+
         }
 
         $marker_output .= '
