@@ -276,8 +276,7 @@ class LaravelGoogleMaps
 //        TODO: Allow customizations of svg markers
 
         if ($marker['icon'] != '') {
-
-            if($marker['type'] == 'svg') {
+            if ($marker['type'] == 'svg') {
                 $marker_output .= "
 
                 var marker_icon = {
@@ -292,7 +291,6 @@ class LaravelGoogleMaps
 
                 ";
             } else {
-
                 $marker_output .= '
                 var marker_icon = {
                     url: "'.$marker['icon'].'"';
@@ -315,7 +313,6 @@ class LaravelGoogleMaps
                 $marker_output .= '};
             ';
             }
-
         }
 
         $marker_output .= '
@@ -2456,7 +2453,6 @@ class LaravelGoogleMaps
 
     public function calculateDistances($params = [])
     {
-
         $distance = '';
         $duration = '';
         $location = [];
@@ -2482,7 +2478,6 @@ class LaravelGoogleMaps
             }
         }
 
-
         $data_location = 'https://maps.googleapis.com/maps/api/distancematrix/json?'.$location_query.'&key='.$this->apiKey;
         if ($this->region != '' && strlen($this->region) == 2) {
             $data_location .= '&region='.$this->region;
@@ -2503,7 +2498,6 @@ class LaravelGoogleMaps
 
         $data = json_decode($data);
 
-
         if ($data->status == 'OK') {
             $distance = $data->rows[0]->elements[0]->distance->value;
             $duration = $data->rows[0]->elements[0]->duration->value;
@@ -2512,21 +2506,19 @@ class LaravelGoogleMaps
                     $data = [
                         'location_query' => trim(mb_strtolower($location_query)),
                         'distance' => $distance,
-                        'duration' => $duration
+                        'duration' => $duration,
                     ];
                     DB::table($this->distanceCacheTableName)->insert($data);
                 }
             }
         } else {
 //            if ($data->status == 'OVER_QUERY_LIMIT') {
-                $error = $data->status;
+            $error = $data->status;
 //            }
         }
 
         return [$distance, $duration, $error];
-
     }
-
 
     public function getMapName()
     {
