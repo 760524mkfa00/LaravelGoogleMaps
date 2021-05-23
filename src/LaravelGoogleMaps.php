@@ -2405,17 +2405,19 @@ class LaravelGoogleMaps
         $data = json_decode($data);
 
         if ($data->status == 'OK') {
+            $lat = $data->results[0]->geometry->location->lat;
+            $lng = $data->results[0]->geometry->location->lng;
             $lat_ne = $data->results[0]->geometry->viewport->northeast->lat;
             $lng_ne = $data->results[0]->geometry->viewport->northeast->lng;
             $lat_sw = $data->results[0]->geometry->viewport->southwest->lat;
             $lng_sw = $data->results[0]->geometry->viewport->southwest->lng;
 
             if ($this->geocodeCaching) { // if we to need to cache this result
-                if ($address != '' && $lat_ne != 0 && $lng_ne != 0) {
+                if ($address != '' && $lat != 0 && $lng != 0) {
                     $data = [
                         'address' => trim(mb_strtolower($address)),
-                        'latitude' => $lat_ne,
-                        'longitude' => $lng_ne,
+                        'latitude' => $lat,
+                        'longitude' => $lng,
                     ];
                     DB::table($this->geoCacheTableName)->insert($data);
                 }
@@ -2426,12 +2428,12 @@ class LaravelGoogleMaps
                 if ($attempts < 2) {
                     sleep(1);
                     $attempts++;
-                    [$lat_ne, $lng_ne, $error] = $this->get_lat_long_from_address($address, $attempts);
+                    [$lat, $lng, $error] = $this->get_lat_long_from_address($address, $attempts);
                 }
             }
         }
 
-        return [$lat_ne, $lng_ne, $error];
+        return [$lat, $lng, $error];
     }
 
     /**
