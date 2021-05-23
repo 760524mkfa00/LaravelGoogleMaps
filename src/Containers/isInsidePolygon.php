@@ -86,7 +86,7 @@ class isInsidePolygon
         if (strpos($pointString, ', ') !== false) {
             $coordinates = explode(', ', $pointString);
         } elseif (strpos($pointString, ',') !== false) {
-            $coordinates = explode(', ', $pointString);
+            $coordinates = explode(',', $pointString);
         } else {
             $coordinates = explode(' ', $pointString);
         }
