@@ -23,10 +23,23 @@ You can also add your AD Sense API Key to your .env file: 'GOOGLE_ADSENSE_PUBLIS
 
 ## Usage
 
+Initialize Map:
+
+Getting Distance:
+
+Storing Distance to Database:
+
+Editing Polygon and saving them to the database:
+
+Within Polygon:
+
+
+
 ```php
 Editing Polygons:
 
 Add the following css for deleting vertices on right click
+
 .delete-menu {
     position: absolute;
     background: white;
@@ -67,8 +80,15 @@ If you discover any security related issues, please email kieranjfahy@gmail.com 
 
 ## Credits
 
--   [Kieran Fahy](https://github.com/760524mkfa00)
--   [All Contributors](../../contributors)
+-   [Steve Marks](https://github.com/biostall)
+-   [Farhan Wazir](https://github.com/farhanwazir)
+-   [GeneaLabs, LLC](https://github.com/GeneaLabs)
+
+Library initiative: BioStall
+
+BioStall developed library for codeigniter originally, which you can found at http://biostall.com/laravel-google-maps-v3-api-package/ (link not working)
+
+Conversion into Laravel from codeigniter by: GeneaLabs -- https://github.com/GeneaLabs/Phpgmaps (but it is incomplete)
 
 ## License
 
