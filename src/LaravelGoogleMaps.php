@@ -790,8 +790,7 @@ class LaravelGoogleMaps
                     newCoordinates_poly.push(latlng_poly);
                 }
 
-                var str_coordinates_poly = JSON.stringify(newCoordinates_poly);
-                const event = new CustomEvent("newCoords", {"detail": str_coordinates_poly});
+                const event = new CustomEvent("newCoords", {"detail": newCoordinates_poly});
                 document.dispatchEvent(event);
 
             }
