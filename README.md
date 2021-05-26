@@ -24,7 +24,27 @@ You can also add your AD Sense API Key to your .env file: 'GOOGLE_ADSENSE_PUBLIS
 ## Usage
 
 ```php
-// Usage description here
+Editing Polygons:
+
+Add the following css for deleting vertices on right click
+.delete-menu {
+    position: absolute;
+    background: white;
+    padding: 3px;
+    color: #666;
+    font-weight: bold;
+    border: 1px solid #999;
+    font-family: sans-serif;
+    font-size: 12px;
+    box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.3);
+    margin-top: -10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.delete-menu:hover {
+    background: #eee;
+}
 ```
 
 ### Testing
