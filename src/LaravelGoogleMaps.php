@@ -771,20 +771,26 @@ class LaravelGoogleMaps
          // Get paths from polygon and set event listeners for each path separately
         polygon_'.count($this->polygons).'.getPaths().forEach(function (path, index) {
 
-        google.maps.event.addListener(path, "insert_at", function () {
-            console.log("insert_at event");
+        google.maps.event.addListener(path, "insert_at", getPolygonCoords);
+        google.maps.event.addListener(path, "remove_at", getPolygonCoords);
+        google.maps.event.addListener(path, "set_at", getPolygonCoords);
         });
-
-        google.maps.event.addListener(path, "remove_at", function () {
-            console.log("remove_at event");
-        });
-
-        google.maps.event.addListener(path, "set_at", function () {
-            console.log(path.getArray());
-        });
-    });
 
         ';
+
+        $polygon_output .= '
+            function getPolygonCoords() {
+                var len = polygon_'.count($this->polygons).'.getPath().getLength();
+                var htmlStr = "";
+                for (var i = 0; i < len; i++) {
+                    htmlStr += polygon_'.count($this->polygons).'.getPath().getAt(i).toUrlValue(5) + "<br>";
+                }
+
+            document.getElementById("info").innerHTML = htmlStr;
+            }
+
+        ';
+
 
         array_push($this->polygons, $polygon_output);
     }
