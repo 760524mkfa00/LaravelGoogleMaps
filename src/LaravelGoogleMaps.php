@@ -798,7 +798,6 @@ class LaravelGoogleMaps
 
         ';
 
-
         array_push($this->polygons, $polygon_output);
     }
 
