@@ -641,6 +641,7 @@ class LaravelGoogleMaps
         $polygon['onmouseup'] = '';                                // JavaScript performed when a mouseup event occurs on a polygon
         $polygon['onrightclick'] = '';                            // JavaScript performed when a right-click occurs on a polygon
         $polygon['zIndex'] = '';                                // The zIndex of the polygon. If two polygons overlap, the polygon with the higher zIndex will appear on top
+        $polygon['editable'] = 'false';
 
         $polygon_output = '';
 
@@ -693,7 +694,8 @@ class LaravelGoogleMaps
                 strokeOpacity: '.$polygon['strokeOpacity'].',
                 strokeWeight: '.$polygon['strokeWeight'].',
                 fillColor: "'.$polygon['fillColor'].'",
-                fillOpacity: '.$polygon['fillOpacity'];
+                fillOpacity: '.$polygon['fillOpacity'].',
+                editable: '.$polygon['editable'];
         if (! $polygon['clickable']) {
             $polygon_output .= ',
                 clickable: false';
@@ -763,6 +765,26 @@ class LaravelGoogleMaps
             });
             ';
         }
+
+        $polygon_output .= '
+
+         // Get paths from polygon and set event listeners for each path separately
+        polygon_'.count($this->polygons).'.getPaths().forEach(function (path, index) {
+
+        google.maps.event.addListener(path, "insert_at", function () {
+            console.log("insert_at event");
+        });
+
+        google.maps.event.addListener(path, "remove_at", function () {
+            console.log("remove_at event");
+        });
+
+        google.maps.event.addListener(path, "set_at", function () {
+            console.log(path.getArray());
+        });
+    });
+
+        ';
 
         array_push($this->polygons, $polygon_output);
     }
