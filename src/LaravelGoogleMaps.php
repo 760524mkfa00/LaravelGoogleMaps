@@ -780,13 +780,20 @@ class LaravelGoogleMaps
 
         $polygon_output .= '
             function getPolygonCoords() {
-                var len = polygon_'.count($this->polygons).'.getPath().getLength();
-                var htmlStr = "";
-                for (var i = 0; i < len; i++) {
-                    htmlStr += polygon_'.count($this->polygons).'.getPath().getAt(i).toUrlValue(5) + "<br>";
+                var coordinates_poly = polygon_'.count($this->polygons).'.getPath().getArray();
+                var newCoordinates_poly = [];
+                for (var i = 0; i < coordinates_poly.length; i++){
+                    lat_poly = coordinates_poly[i].lat();
+                    lng_poly = coordinates_poly[i].lng();
+
+                    latlng_poly = [lat_poly, lng_poly];
+                    newCoordinates_poly.push(latlng_poly);
                 }
 
-            document.getElementById("info").innerHTML = htmlStr;
+                var str_coordinates_poly = JSON.stringify(newCoordinates_poly);
+                const event = new CustomEvent("newCoords", {"detail": str_coordinates_poly});
+                document.dispatchEvent(event);
+
             }
 
         ';
