@@ -2504,10 +2504,10 @@ class LaravelGoogleMaps
 
         if ($this->geocodeCaching) { // if caching of geocode requests is activated
 
-            $geocache = DB::table($this->geoCacheTableName)->select('latitude', 'longitude')->where('address', trim(mb_strtolower($address)))->first();
+            $geocache = DB::table($this->geoCacheTableName)->select(\DB::raw("ST_X(location) AS X, ST_Y(location) AS Y"))->where('address', trim(mb_strtolower($address)))->first();
 
             if ($geocache) {
-                return [$geocache->latitude, $geocache->longitude];
+                return [$geocache->X, $geocache->Y];
             }
         }
 
@@ -2543,8 +2543,7 @@ class LaravelGoogleMaps
                 if ($address != '' && $lat != 0 && $lng != 0) {
                     $data = [
                         'address' => trim(mb_strtolower($address)),
-                        'latitude' => $lat,
-                        'longitude' => $lng,
+                        'location' => \DB::raw("ST_GeomFromText('POINT({$lat} {$lng})')")
                     ];
                     DB::table($this->geoCacheTableName)->insert($data);
                 }

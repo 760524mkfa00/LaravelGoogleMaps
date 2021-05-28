@@ -16,8 +16,7 @@ class CreateGMapsGeoCacheTable extends Migration
         Schema::create('gmaps_geocache', function (Blueprint $table) {
             $table->id();
             $table->text('address');
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->point('location');
             $table->timestamps();
         });
     }
