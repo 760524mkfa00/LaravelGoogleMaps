@@ -2631,6 +2631,15 @@ class LaravelGoogleMaps
         $data = json_decode($data);
 
         if ($data->status == 'OK') {
+            if($data->rows[0]->elements[0]->status != 'OK')
+            {
+                $distance = 0;
+                $duration = 0;
+                $error = $data->rows[0]->elements[0]->status;
+
+                return [$distance, $duration, $error];
+
+            }
             $distance = $data->rows[0]->elements[0]->distance->value;
             $duration = $data->rows[0]->elements[0]->duration->value;
             if ($this->distanceCache) { // if we to need to cache this result
